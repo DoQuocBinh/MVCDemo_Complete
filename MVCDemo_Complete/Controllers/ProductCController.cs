@@ -13,7 +13,8 @@ namespace MVCDemo_Complete.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            ProductDB2Context db = new ProductDB2Context();
+            return View(db.Products.ToList());
         }
         public IActionResult Create()
         {
@@ -21,8 +22,8 @@ namespace MVCDemo_Complete.Controllers
         }
         public async Task<IActionResult> Upload(IFormFile postedFile, Product product)
         {
-            var fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
-            var extension = Path.GetExtension(postedFile.FileName);
+            //var fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
+            //var extension = Path.GetExtension(postedFile.FileName);
             using (var dataStream = new MemoryStream())
             {
                 await postedFile.CopyToAsync(dataStream);
