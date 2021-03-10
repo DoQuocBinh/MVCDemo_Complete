@@ -5,19 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVCDemo_Complete.Models;
 
 namespace MVCDemo_Complete.Controllers
 {
     public class ProductCController : Controller
     {
+        ProductDB2Context db = new ProductDB2Context();
         public IActionResult Index()
         {
-            ProductDB2Context db = new ProductDB2Context();
-            return View(db.Products.ToList());
+            
+            //load both Product and Category
+            return View(db.Products.Include(p=>p.Category).ToList());
         }
         public IActionResult Create()
         {
+            var Categories = db.Categories.ToList();
+            ViewBag.Categories = Categories;
             return View();
         }
         public async Task<IActionResult> Upload(IFormFile postedFile, Product product)
@@ -29,10 +34,10 @@ namespace MVCDemo_Complete.Controllers
                 await postedFile.CopyToAsync(dataStream);
                 product.Picture = dataStream.ToArray();
             }
-            ProductDB2Context db = new ProductDB2Context();
+           
             db.Products.Add(product);
             db.SaveChanges();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index");
             
         }
     }
