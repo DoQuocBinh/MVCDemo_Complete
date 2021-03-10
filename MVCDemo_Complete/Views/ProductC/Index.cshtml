@@ -9,6 +9,10 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Search" method="post">
+    Name to search <input type="text" name="txtSearch" />
+    <input type="submit"  value="Search"/>
+</form>
 <table class="table">
     <thead>
         <tr>

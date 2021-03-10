@@ -13,6 +13,13 @@ namespace MVCDemo_Complete.Controllers
     public class ProductCController : Controller
     {
         ProductDB2Context db = new ProductDB2Context();
+
+        public IActionResult Search(string txtSearch)
+        {
+            var result = db.Products.Where(p => p.ProductName.Contains(txtSearch)).
+                    Include(p => p.Category).ToList();
+            return View("Index", result);
+        }
         public IActionResult Index()
         {
             
